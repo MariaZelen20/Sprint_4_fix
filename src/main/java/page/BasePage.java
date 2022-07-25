@@ -52,6 +52,8 @@ public class BasePage {
     private final By orderButtonUnderarm = By.className("Button_Middle__1CSJM");
     //Кнопка подтверждения куки
     private final By cookie = By.id("rcc-confirm-button");
+
+    final By orderCompleteImage = By.xpath("//div[@class='Order_ModalHeader__3FDaJ' and text()='Заказ оформлен']");
     //скролл до вопросов
     public BasePage scrollToQuestion() {
         WebElement element = driver.findElement(By.className("Home_FAQ__3uVm4"));
@@ -105,6 +107,11 @@ public class BasePage {
         return this;
     }
 
+    //картинка оформленного заказа
+    public boolean isOrderCompleteImageDisplayed(){
+        return driver.findElement(orderCompleteImage).isDisplayed();
+    }
+
     public OrderPage fillOrderDetailsForm(OrderPage orderPage) {
         orderPage.fillName(orderPage.getName());
         orderPage.fillLastName(orderPage.getLastName());
@@ -120,6 +127,8 @@ public class BasePage {
         orderPage.fillCommentForCourier(orderPage.getCommentCourier());
         orderPage.clickMakeOrderButton();
         orderPage.clickAgreementButton();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.findElement(orderPage.orderCompleteImage);
         return (orderPage);
     }
 
